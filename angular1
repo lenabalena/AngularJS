@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
 <body ng-app="myApp" ng-controller="myCtrl">
 
-<h1 ng-repeat="x in records">{{x}}</h1>
+<div ng-init="a=1;b=2">
+ 
+<p>Input two numbers in the input box:</p>
+<p>one: <input type="number" ng-model="a"/></p>
+<p>two: <input type="number" ng-model="b"/></p>
+<p>suma:{{b + a}}</p>
+<p>produs:{{b * a}} </p>
+<p>diferenta:{{b - a}} </p>
+<p>catul:{{b / a}}</p>
+<p>{{a}}*1={{a*1}}</p>
+<p>{{a}}*2={{a*2}}</p>
+<p>{{a}}*3={{a*3}}</p>
+
+<h1 ng-repeat="x in records">{{a}}* {{x}}={{a * x}}</h1>
+</div>
 
 <script>
 var app = angular.module("myApp", []);
 app.controller("myCtrl", function($scope) {
-  $scope.records = [
-    "Alfreds Futterkiste",
-    "Berglunds snabbköp",
-    "Centro comercial Moctezuma",
-    "Ernst Handel",
-  ]
-});
-</script>
+  $scope.records = [1,2,3,4]});</script>
 
 </body>
 </html>
