@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="formCtrl">
+  <form novalidate>
+    Nume:<br>
+    <input type="text" ng-model="nume"><br>
+    Prenume:<br>
+    <input type="text" ng-model="prenume">
+    <br>
+    Alege gen: <br/>
+     <input type="radio" ng-model="gen" value="F">F
+      <input type="radio" ng-model="gen" value="M">M
+      <input type="radio" ng-model="gen" value="Other">Other
+    <br>
+  <p>Studii :
+  <select ng-model="stud">
+    <option value="">
+    <option value="Medii">Medii
+    <option value="Medii Speciale">Medii Speciale
+    <option value="Superioare">Superioare
+    <option value="Doctor ">Doctor Habilitat
+    </select>
+    <br><br>
+    <button type="reset " ng-click="reset()">RESET</button>
+    <button  type="submit " ng-click="done()">DONE</button>
+    </form>
+    <div ng-show="showMe"> 
+    <h3>Datele introduse :</h3> 
+    <br>
+    <p>Nume: {{nume}} </p>
+    <p>Prenume : {{prenume}}</p>
+    <p> Gen : {{gen}} </p>
+    <p> Studii : {{stud}} <p>
+    <p ng-if="stud==='Medii' || stud==='Medii Speciale'" > Salariu 5000 </p>
+     <p ng-if="stud==='Superioare'" > Salariu 10000 </p>
+      <p ng-if="stud==='Doctor'" > Salariu 15000 </p>
+    
+    </div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('formCtrl', function($scope) {
+	$scope.showMe=false;
+    $scope.reset = function() {
+        $scope.nume = $scope.prenume='';
+    };
+    $scope.done=function(stud){
+    $scope.showMe=!$scope.showMe;
+   };
+});
+</script>
+
+</body>
+</html>
