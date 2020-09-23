@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body ng-app="myApp" ng-controller="myCtrl">
+
+<form>
+<h> Formular de angajare : </h> <br>
+Nume : <input ng-model="nume" type="text"/> <br><br>
+Prenume : <input ng-model="prenume" type="text"><br><br>
+Data Nasterii : <input type="date" ng-model="data"><br><br><br>
+
+  Facultatea :
+  <br>
+  <input type="radio" ng-model="facultate" value="Chimia">Chimia<br><br>
+  <input type="radio" ng-model="facultate" value="Informatica">Informatica<br><br>
+  <input type="radio" ng-model="facultate" value="Matematica">Matematica<br><br>
+   <input type="radio" ng-model="facultate" value="Biologia">Biologia<br>
+   <br><br>
+    Obiectul predarii :
+  <select ng-model="obiect">
+    <option value="">
+    <option value="Chimie organica">Chimie organica
+    <option value="Matematica economica">Matematica economica
+    <option value="Proiectare sisteme informatice">Proiectare sisteme informatice
+     <option value="Biologie moleculara">Biologie moleculara
+  </select><br><br>
+  Salariu asteptat : <input ng-model="salariu" type="number" ng-change="verification()">
+  <span ng-show="exagerat"> Exagerat! </span> <span ng-show="subestim">Va subestimati!</span>
+  <br><br>
+  
+   <button type="reset " ng-click="reset()">Anuleaza</button>
+ 
+  <button  type="submit " ng-disabled="salariudone" ng-click="done()">Confirma</button>
+</form>
+
+<div ng-model="afisare" ng-show="showMe">
+<h3>Afisare date : </h3>
+<p> Numele : {{nume}}</p>
+<p>Prenumele : {{prenume}}</p>
+<p > Data nasterii : {{data  | date : "fullDate"}}</p>
+<p >Facultatea : {{facultate}}<p>
+<p > Obiectul predarii : {{obiect}}</p>
+<p> Salariu : {{salariu}}</p>
+</div>
+ 
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope) {
+	$scope.showMe=false;
+    $scope.reset = function() {
+        $scope.nume = $scope.prenume=$scope.facultate=$scope.obiect=$scope.salariu=$scope.afisare='';
+    };
+    $scope.done=function(){
+    $scope.showMe=!$scope.showMe;
+   };
+   $scope.verification = function(){
+		if($scope.salariu > 5000){
+						$scope.salariudone = true;
+						$scope.exagerat = true;
+						$scope.subestim = false;
+		 } 
+         if($scope.salariu < 3000) { $scope.subestim = true; $scope.salariudone = true; $scope.exagerat = false;}
+         if( $scope.salariu <= 5000 && $scope.salariu >= 3000 ) {$scope.salariudone = false; $scope.exagerat = false; $scope.subestim = false; } 
+         };
+});
+</script>
+
+
+</body>
+</html>
