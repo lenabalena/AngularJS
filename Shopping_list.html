@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html ng-app="purchaseApp">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="script.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+</head>
+<body ng-controller="purchaseController">
+    <div class="page-header">
+        <h1> Список покупок </h1>
+    </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Предмет</th>
+                    <th>Цена</th>
+                    <th>Куплено</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="x in list.items">
+                    <td>{{x.purchase}}</td>
+                    <td>{{x.price}}</td>
+                    <td><input type="checkbox" ng-model="x.done" /></td>
+                </tr>
+                <tr>
+                   <td>Total:</td>
+                   <td colspan="2">{{ sumaTotala }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <button class="btn btn-default" ng-click="total()">Total</button>
+                </div>
+            </div>
+                    <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <button class="btn btn-default" ng-click="deluser()">Total</button>
+                </div>
+            </div>
+
+ 
+<script>
+   var model = {
+    items: [
+        { purchase: "Хлеб", done: false, price: 15.9 },
+        { purchase: "Масло", done: false, price: 60 },
+        { purchase: "Картофель", done: true, price: 22.6 },
+        { purchase: "Сыр", done: false, price:310 }
+    ]
+};
+var purchaseApp = angular.module("purchaseApp", []);
+    purchaseApp.controller("purchaseController", function ($scope) {
+    $scope.list = model;
+    $scope.sumaTotala = 0;
+    $scope.addItem = function (text, price) {
+        price = parseFloat(price); // преобразуем введенное значение к числу
+        if(text != "" && !isNaN(price)) // если текст установлен и введено число, то добавляем
+        {
+            $scope.list.items.push({ purchase: text, price: price, done: false });
+        }
+    }
+
+    $scope.deluser=function(){
+       $scope.list.items.forEach(function(x){
+   			x.done=false;
+    })
+    }
+    
+    $scope.total = function(){
+        $scope.sumTotala=0;
+        $scope.list.items.forEach(function(x){
+            if(x.done==true) $scope.sumaTotala += x.price;
+        })
+    }
+});
+</script>
+</body>
+</html>
