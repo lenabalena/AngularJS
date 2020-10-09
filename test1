@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<style>
+div.background {
+  background: url(https://cache.desktopnexus.com/thumbseg/1263/1263729-bigthumbnail.jpg) repeat;
+   background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover;
+  border: 2px solid black;
+}
+
+div.transbox {
+  margin: 30px;
+  background-color: #ffffff;
+  border: 1px solid black;
+  opacity: 0.6;
+}
+
+div.transbox p {
+  margin: 5%;
+  font-weight: bold;
+  color: #000000;
+}
+
+</style>
+<body>
+<div ng-app="myApp" ng-controller="proiect" class="background">
+<div ng-show="Manager">
+<h1><p style="text-align: center;  font: 35px Arial, sans-serif;">Aeroportul "CHISINAU"</p></h1><br/><br/>
+<div class="transbox">
+<form>
+<h1><p style=" margin-left: 3%;">Autentificare:</p></h1><br/>
+
+ <div class="col-md-8">
+<label>Login:</label> 
+<input type="text" class="form-control" ng-change="verification()" ng-model="log" style="width: 100%; padding: 12px 20px; margin: 8px 0;box-sizing: border-box;">
+</div>
+
+<div class="col-md-6">
+<label>Password:</label> 
+<input type="password" class="form-control" ng-change="verification()" ng-model="pas" style="width: 100%; padding: 12px 20px; margin: 8px 0;box-sizing: border-box;"></div>
+<br/><br/>
+
+<button  type="submit" ng-disabled="salariudone" ng-click="trimite()"style=" margin:auto; display:block; width : 30%;" class="btn btn-default">Send</button>
+  <br/>
+  <button type="reset" ng-click="sterge()" style=" margin:auto;
+  display:block; width : 30%;" class="btn btn-default">Reset</button>
+</form>
+</div>
+</div>
+
+<div ng-show="orar">
+<h1><p style="text-align: center; font: 35px Arial, sans-serif;" >Aeroportul "CHISINAU"</p></h1><br/><br/>
+<h1><p style=" margin-left: 3%;">Bine ai venit,</p></h1>
+<h3><p style=" margin-left: 3%;">Urmareste orarul rutelor avia.</p></h3><br/><br/>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th style="text-align: center;
+  vertical-align: middle;">Destinatia</th>
+                    <th style="text-align: center;
+  vertical-align: middle;">Ora</th>
+                    <th style="text-align: center;
+  vertical-align: middle;">Pretul</th>
+  				<th style="text-align: center;
+  vertical-align: middle;">Rezerva</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="x in list.items">
+                    <td style="text-align: center;
+  vertical-align: middle;">{{x.destinatia}}</td>
+                    <td style="text-align: center;
+  vertical-align: middle;">{{x.ora}}</td>
+  				 <td style="text-align: center;
+  vertical-align: middle;">{{x.pretul}}</td>
+                    <td style="text-align: center;
+  vertical-align: middle;"><input type="checkbox" ng-model="x.done" /></td>
+                </tr>
+                <tr>
+                   <td style="text-align: center;
+  vertical-align: middle;">Total:</td>
+                   <td colspan="3" style="text-align: center;
+  vertical-align: middle;">{{ sumaTotala }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <button class="btn btn-default" ng-click="total()">Total</button>
+                </div>
+            </div>
+                    <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <button class="btn btn-default" ng-click="deluser()">Sterge</button>
+                </div>
+                <br/>
+                 <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <button class="btn btn-default" ng-click="manager()">Manager</button>
+                </div>
+                <!--<button class="btn btn-default" style=" margin:auto;
+  display:block; width : 30%;" ng-click="logoutA()">Logout</button>-->
+            </div></div></div>
+<div  ng-show="Admin">
+<h1><p style="text-align: center;  font: 35px Arial, sans-serif;">Aeroportul "CHISINAU"</p></h1><br/><br/>
+
+<h1><p style=" margin-left: 3%;">Admin Page</p></h1>
+        <div class="form-inline">
+            <div class="form-group">
+                <div class="col-md-8">
+                    <input type="text" class="form-control" ng-model="destinatia1" placeholder = "Adauga destinatia" />
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-md-6">
+                    <input type="text" class="form-control" ng-model="ora1" placeholder="Adauga ora" />
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-md-6">
+                    <input type="number" class="form-control" ng-model="pretul1" placeholder="Pretul cursei" />
+                </div>
+            </div>
+            
+                    <button style=" margin:auto;
+  display:block; width : 30%;" class="btn btn-default" ng-click="addItem(destinatia1, pretul1, ora1)" >Add</button>
+<hr/>
+          
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Destinatia</th>
+                    <th>Ora</th>
+                    <th>Pretul</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in list.items">
+                    <td>{{item.destinatia}}</td>
+                    <td>{{item.ora}}</td>
+                    <td>{{item.pretul}}</td>
+                    
+                    <td><input type="checkbox" ng-model="item.done" /></td>
+                </tr>
+            </tbody>
+        </table><hr/>
+          <div class="form-group">
+                <div class="col-md-offset-2 col-md-8">
+                    <button class="btn btn-default" style=" margin:auto;
+  display:block; width : 30%;" ng-click="del()">Delete Checked</button><br/>
+  <button class="btn btn-default" style=" margin:auto;
+  display:block; width : 30%;" ng-click="logoutA()">Logout</button>
+                </div>
+            </div>
+    </div>
+
+
+
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('proiect', function($scope) {
+    $scope.sterge = function() {
+    $scope.log = $scope.pas='';
+    };
+    
+    $scope.Admin=false;
+     $scope.Manager=false;
+      $scope.orar=true;
+    
+    $scope.salariudone = true;
+    
+    $scope.verification=function(){
+   if($scope.log==='Admin' &&  $scope.pas==='PIV')
+    {$scope.salariudone = false;}
+    };
+    
+   
+    $scope.trimite=function(){
+    if($scope.log==='Admin' &&  $scope.pas==='PIV')
+    {$scope.Admin=true;
+      $scope.Manager=false;}
+   }; 
+   
+   $scope.Manager=false;
+   $scope.manager=function(){
+   $scope.Manager=true;
+   $scope.orar=false;
+   
+   
+   }
+   
+   var model = {
+    items: [
+        { destinatia: "Ierusalim", ora:"10:00", done: false, pretul: 150 },
+        { destinatia: "Roma", ora:"17:00", done: false, pretul: 90 },
+        { destinatia: "Bali", ora:"13:15", done: false, pretul: 100 },
+        { destinatia: "Berna", ora:"06:45", done: false, pretul: 65 }
+    ]
+};
+
+ $scope.list = model;
+    $scope.addItem = function (destinatia1, pretul1, ora1) {
+        price = parseFloat(pretul1);
+        if(destinatia1 != "" && !isNaN(pretul1))
+        {
+            $scope.list.items.push({ destinatia: destinatia1, pretul: pretul1, done: false, ora:ora1 });
+        }
+    }
+
+       $scope.del = function() {
+        var oldList = $scope.list.items;
+        $scope.list.items = [];
+        angular.forEach(oldList, function(item) {
+            if (!item.done) $scope.list.items.push(item);
+        });
+    };
+    
+    $scope.logoutA = function(){
+    $scope.Admin=false;
+   $scope.orar=true;
+    $scope.log = $scope.pas='';
+    $scope.salariudone = true; }
+    
+
+    
+    
+    
+    $scope.sumaTotala = 0;
+    $scope.deluser=function(){
+       $scope.list.items.forEach(function(x){
+   			x.done=false;
+    })
+    }
+    
+    $scope.total = function(){
+        $scope.sumTotala=0;
+        $scope.list.items.forEach(function(x){
+            if(x.done==true) $scope.sumaTotala += x.price;
+        })
+    }
+
+});
+</script>
+</body>
+</html>
