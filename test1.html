@@ -27,15 +27,27 @@ div.transbox p {
 </style>
 <body>
 <div ng-app="myApp" ng-controller="proiect" class="background">
+<div ng-show="Home">
+<h1><p style="text-align: center;  font: 35px Arial, sans-serif;">Aeroportul "CHISINAU"</p></h1><br/><br/>
+<h3>Aeroportul Internațional Chișinău este principalul aeroport internațional din Republica Moldova, și unul din principalele puncte de intrare în Republica Moldova. Aeroportul este localizat la periferia orașului Chișinău, pe șoseaua care leagă orașul cu sudul țării. Este hub-ul și centrul de operațiuni pentru companiile: Air Moldova, Moldavian Airlines, Tandem Aero și FlyOne. La 31 mai 1995, Аeroportului Chișinău i s-a conferit statutul de Aeroport Internațional iar în 2013 a fost concesionat pe o perioadă de 49 de ani către „Avia Invest” SRL, firmă cu acționariat Rusesc.</h3>
+ <div class="form-group" style=" display:inline-block;">
+                <div class="col-md-offset-2 col-md-8">
+                    <button class="btn btn-default" ng-click="manager()">Manager</button>
+                </div></div>
+                <div class="form-group" style=" display:inline-block;">
+                <div class="col-md-offset-2 col-md-8">
+                    <button style="margin-left:410%" class="btn btn-default" ng-click="registration()">Inregistrare</button>
+                </div></div>
+</div>
 <div ng-show="Manager">
 <h1><p style="text-align: center;  font: 35px Arial, sans-serif;">Aeroportul "CHISINAU"</p></h1><br/><br/>
 <div class="transbox">
 <form>
 <h1><p style=" margin-left: 3%;">Autentificare:</p></h1><br/>
 
- <div class="col-md-8">
+ <div class="col-md-8" >
 <label>Login:</label> 
-<input type="text" class="form-control" ng-change="verification()" ng-model="log" style="width: 100%; padding: 12px 20px; margin: 8px 0;box-sizing: border-box;">
+<input type="text" class="form-control" ng-init="log='Admin'" ng-change="verification()" ng-model="log" style="width: 100%; padding: 12px 20px; margin: 8px 0;box-sizing: border-box;">
 </div>
 
 <div class="col-md-6">
@@ -47,7 +59,11 @@ div.transbox p {
   <br/>
   <button type="reset" ng-click="sterge()" style=" margin:auto;
   display:block; width : 30%;" class="btn btn-default">Reset</button>
+  <br/>
+   <button ng-click="home()" style=" margin:auto; display:block; width : 30%;"  class="btn btn-default">Home</button>
 </form>
+                   
+               
 </div>
 </div>
 
@@ -69,13 +85,13 @@ div.transbox p {
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="x in list.items">
+                <tr ng-repeat="x in list.items | orderBy : 'destinatia'">
                     <td style="text-align: center;
   vertical-align: middle;">{{x.destinatia}}</td>
                     <td style="text-align: center;
   vertical-align: middle;">{{x.ora}}</td>
   				 <td style="text-align: center;
-  vertical-align: middle;">{{x.pretul}}</td>
+  vertical-align: middle;">{{x.pretul | currency}}</td>
                     <td style="text-align: center;
   vertical-align: middle;"><input type="checkbox" ng-model="x.done" /></td>
                 </tr>
@@ -87,23 +103,30 @@ div.transbox p {
                 </tr>
             </tbody>
         </table>
-        <div class="form-group">
+       <div>
+        <div class="form-group ">
                 <div class="col-md-offset-2 col-md-8">
                     <button class="btn btn-default" ng-click="total()">Total</button>
                 </div>
             </div>
                     <div class="form-group">
                 <div class="col-md-offset-2 col-md-8">
-                    <button class="btn btn-default" ng-click="deluser()">Sterge</button>
-                </div>
+                    <button style="float:none, margin-left:50px"class="btn btn-default" ng-click="deluser()">Sterge</button>
+                </div></div>
                 <br/>
-                 <div class="form-group">
+               
+                 <div class="form-group" style=" display:inline-block;">
                 <div class="col-md-offset-2 col-md-8">
-                    <button class="btn btn-default" ng-click="manager()">Manager</button>
-                </div>
+                     <button class="btn btn-default" style=" margin:auto;
+  display:block; width : 30%;" ng-click="logoutA()">Logout</button>
+                </div></div>
+               
+                
+                
                 <!--<button class="btn btn-default" style=" margin:auto;
   display:block; width : 30%;" ng-click="logoutA()">Logout</button>-->
-            </div></div></div>
+  
+            </div></div>
 <div  ng-show="Admin">
 <h1><p style="text-align: center;  font: 35px Arial, sans-serif;">Aeroportul "CHISINAU"</p></h1><br/><br/>
 
@@ -144,12 +167,36 @@ div.transbox p {
                 <tr ng-repeat="item in list.items">
                     <td>{{item.destinatia}}</td>
                     <td>{{item.ora}}</td>
-                    <td>{{item.pretul}}</td>
+                    <td>{{item.pretul | currency}}</td>
                     
                     <td><input type="checkbox" ng-model="item.done" /></td>
                 </tr>
             </tbody>
         </table><hr/>
+        <div class = "container"><h4><b>Registered Users</b></h4>
+<table ng-if="users.length" class = "table table-striped table-bordered table-hover">
+<thead>
+<tr class = "info">
+<th>Name</th>
+<th>Email</th>
+<th>Phone</th>
+<th ng-if="!ifSearchUser">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr ng-repeat = "user in users">
+<td>{{ user.name }}</td>
+<td>{{ user.email }}</td>
+<td>{{ user.phone }}</td>
+<td ng-if="!ifSearchUser">
+<a href="#" ng-click="edit(user.id)" role = "button" class = "btn btn-info">edit</a> &nbsp;
+<a href="#" ng-click="delete(user.id)" role = "button" class = "btn btn-danger">delete</a>
+</td>
+</tr>
+</tbody>
+</table>
+<div class = "container" ng-hide="users.length > 0">No Users Found</div>
+</div>
           <div class="form-group">
                 <div class="col-md-offset-2 col-md-8">
                     <button class="btn btn-default" style=" margin:auto;
@@ -157,8 +204,40 @@ div.transbox p {
   <button class="btn btn-default" style=" margin:auto;
   display:block; width : 30%;" ng-click="logoutA()">Logout</button>
                 </div>
-            </div>
+            </div></div>
+            <div ng-show="Registration" class = "container" style="width:550px">
+<div style="text-align:center;">
+<h3><b>User Registraion Form</b></h3>
+</div>
+<div>
+<div align="right">
+<a href="#" ng-click="searchUser()">{{title}}</a>
+</div>
+<form role = "form" class="well" ng-hide="ifSearchUser">
+<div class = "form-group">
+<label for = "name"> Name:  </label>
+<input type = "text" id = "name" class = "form-control" placeholder = "Enter Name " ng-model = "newuser.name">
+</div>
+<div class = "form-group">
+<label for = "email"> Email:  </label>
+<input type = "email" id = "email" class = "form-control" placeholder = "Enter Email " ng-model = "newuser.email">
+</div>
+<div class = "form-group">
+<label for = "password"> Password:  </label>
+<input type = "password" id = "password" class = "form-control" placeholder = "Enter Password " ng-model = "newuser.password">
+</div>
+<div class = "form-group">
+<label for = "phone"> Phone:  </label>
+<input type = "text" id = "phone" class = "form-control" placeholder = "Enter Phone " ng-model = "newuser.phone">
+</div>
+<br>
+<input type="hidden" ng-model="newuser.id">
+<input type="button" class="btn btn-primary" ng-click="saveUser()" class="btn btn-primary" value = "Submit">
+<input type="button" class="btn btn-primary" ng-click="home()" class="btn btn-primary" value = "Home">
+</form>
     </div>
+</div>
+</div>
 
 
 
@@ -172,7 +251,8 @@ app.controller('proiect', function($scope) {
     
     $scope.Admin=false;
      $scope.Manager=false;
-      $scope.orar=true;
+      $scope.orar=false;
+      $scope.Home=true;
     
     $scope.salariudone = true;
     
@@ -191,10 +271,20 @@ app.controller('proiect', function($scope) {
    $scope.Manager=false;
    $scope.manager=function(){
    $scope.Manager=true;
-   $scope.orar=false;
+   $scope.Home=false;
+   };
+   $scope.registration=function(){
+   $scope.Home=false;
+   $scope.Registration=true;
+   };
    
+   $scope.home=function()
+   {
+   $scope.Home=true;
+   $scope.Manager=false;
+   $scope.Admin=false;
+   };
    
-   }
    
    var model = {
     items: [
@@ -223,8 +313,10 @@ app.controller('proiect', function($scope) {
     };
     
     $scope.logoutA = function(){
+    $scope.orar=false;
     $scope.Admin=false;
-   $scope.orar=true;
+    $scope.Manager=false;
+   $scope.Home=true;
     $scope.log = $scope.pas='';
     $scope.salariudone = true; }
     
@@ -244,9 +336,105 @@ app.controller('proiect', function($scope) {
         $scope.list.items.forEach(function(x){
             if(x.done==true) $scope.sumaTotala += x.price;
         })
-    }
+   
+   
+var users = [{
+'id' : 0,
+'name' : 'John Doe',
+'email' : 'johndoe@gmail.com',
+'password': 'johndoe',
+'phone' : '123-45-678-901'}];	
 
+	// Save User
+	this.save = function(user)  
+	{
+		if(user.id == null)                       
+		{
+			user.id = uid++;
+			users.push(user);
+		}
+		else
+		{
+			for(var i in users)
+			{
+				if(users[i].id == user.id)
+				{
+					users[i] = user;
+				}
+			}
+		}
+	};
+
+	// Search User
+	this.get = function(id)
+	{
+		for(var i in users )
+		{
+		if( users[i].id == id)
+		{
+		return users[i];
+		}
+		}
+	};
+
+	// Delete User
+	this.delete = function(id)
+	{
+	for(var i in users)
+	{
+	if(users[i].id == id)
+	{
+	users.splice(i,1);
+	}
+	}
+	};	
+
+	// List Users
+	this.list = function()
+	{
+	return users;
+	};	
 });
+
+// Register Controller 
+myApp.controller("RegisterController" , function($scope , RegisterService){
+console.clear();
+$scope.ifSearchUser = false;
+$scope.title ="User List";
+$scope.users = RegisterService.list();
+$scope.saveUser = function()
+{
+	console.log($scope.newuser);
+	if($scope.newuser == null || $scope.newuser == angular.undefined)
+	return;
+	RegisterService.save($scope.newuser);
+	$scope.newuser = {};
+};		
+$scope.delete = function(id)
+{
+	RegisterService.delete(id);
+	if($scope.newuser != angular.undefined && $scope.newuser.id == id)
+	{
+		$scope.newuser = {};
+	}
+};		
+$scope.edit = function(id)
+{
+	$scope.newuser = angular.copy(RegisterService.get(id));
+};		
+$scope.searchUser = function(){
+	if($scope.title == "User List"){
+		$scope.ifSearchUser=true;
+		$scope.title = "Back";
+	}
+	else
+	{
+		$scope.ifSearchUser = false;
+		$scope.title = "User List";
+	}		  
+};});
+
+
 </script>
 </body>
 </html>
