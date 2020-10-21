@@ -229,7 +229,7 @@ app.controller('proiect', function($scope) {
     $scope.salariudone = true;
     
     $scope.verification=function(){
-   if($scope.log==='Admin' &&  $scope.pas==='PIV')
+   if($scope.log==='Admin' &&  $scope.pas==='admin')
     {$scope.salariudone = false;}
     else {
     var old=$scope.user.person;
@@ -334,7 +334,7 @@ $scope.name1=$scope.email1=$scope.password1=$scope.phone1="";
     $scope.total = function(){
         $scope.sumTotala=0;
         $scope.list.items.forEach(function(x){
-            if(x.done==true) $scope.sumaTotala += x.price;
+            if(x.done==true) $scope.sumaTotala += x.pretul;
         })}
    
    
